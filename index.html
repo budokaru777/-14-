@@ -539,6 +539,7 @@
 
     // Discord Webhook URL（黒板通知用）
     const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1570664500846264434/o6Ryak3gqhICjxLYjncH2FXMNT0LhPUPqBDNOVVlEww1Xvm8HskIntWmeexwgsEHbyiZ";
+    const APP_URL = "https://budokaru777.github.io/Rescue-Map/";
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -552,19 +553,22 @@
     let calendarInstance = null;
     let isInitialBoardLoad = true;
 
-    // Discord Webhook 送信関数
+    // Discord Webhook 送信関数（アプリURLリンク付き）
     async function sendDiscordNotification(type, title, date, content, author) {
       const formattedDate = date ? date.replace('T', ' ') : '未設定';
       const payload = {
         username: "スタサポ 黒板通知Bot",
+        content: `📌 **黒板が更新されました！**\n👉 今すぐ確認する: ${APP_URL}`,
         embeds: [
           {
             title: `📢 【${type}】${title}`,
+            url: APP_URL,
             description: content || "（詳細メモなし）",
             color: 3066993, // エメラルドグリーン
             fields: [
               { name: "📅 日時・期限", value: formattedDate, inline: true },
-              { name: "✍️ 投稿者", value: author, inline: true }
+              { name: "✍️ 投稿者", value: author, inline: true },
+              { name: "🔗 ポータルリンク", value: `[スタサポを開く](${APP_URL})`, inline: false }
             ],
             footer: { text: "スタサポ - EduPortal & Task Hub" },
             timestamp: new Date().toISOString()
@@ -846,4 +850,3 @@
   </script>
 </body>
 </html>
-
